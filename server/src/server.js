@@ -1,22 +1,12 @@
-const express = require("express");
-const app = express();
-const port = 3000;
+import './config/env.js'
 
-app.use(express.json())
+import express from "express"
+import { connectDB } from './config/db.js';
+await connectDB();
 
-app.get('/',(req,res) => {
-    res.json({
-        "message":"message from express"
-    }) 
-})
+const port = process.env.PORT || 3000;
 
-app.get('/api/health', (req,res) => {
-    res.json({
-        "status": "OK",
-        "database": "Connected"
-    })
-})
-
+import app from "./app.js"
 
 
 app.listen(port, ()=> (
