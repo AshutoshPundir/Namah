@@ -2,7 +2,7 @@ import { request } from "express";
 import { FriendRequest } from "../models/FriendRequest.js";
 import { User } from "../models/User.js";
 
-export const sendFriendRequest = async (req, res) => {
+export const sendFriendRequest = async (req, res) => {``
     try {
 
         const senderId = req.user.userId;
@@ -98,7 +98,7 @@ export const acceptFriendRequest = async (req, res)=>{
 
     if (request.receiver.toString() !== req.user.userId) {
         return res.status(403).json({
-            message: "You are not allowed to reject this request."
+            message: "You are not allowed to accept this request."
         });
     }
 
@@ -143,7 +143,7 @@ export const acceptFriendRequest = async (req, res)=>{
 
     }catch(error){
     return res.status(500).json({
-        message:"Internal Server Error"
+        message:"Internal Server Error " + error
     })
 }
 
@@ -165,7 +165,7 @@ export const rejectFriendRequest = async (req, res)=>{
 
     if (request.receiver.toString() !== req.user.userId) {
         return res.status(403).json({
-            message: "You are not allowed to accept this request."
+            message: "You are not allowed to reject this request."
         });
     }
 
