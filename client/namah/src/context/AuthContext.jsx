@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import axios from 'axios';
+import { connectSocket, disconnectSocket } from "../services/socket";
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -30,6 +31,14 @@ export const AuthProvider = ({children}) => {
         }
         getCurrentUser();
     },[])
+
+    useEffect(()=> {
+        if(user){
+            connectSocket();
+        }else{
+            disconnectSocket();
+        }
+    },[user])
     
     const login = async (email, password) => {
     try {
@@ -44,8 +53,8 @@ export const AuthProvider = ({children}) => {
             }
         );
 
-        setUser(response.data.user);
-
+        setUser(response.data);
+        
         return response.data;
     } catch (error) {
         console.log("login error: " + error);
@@ -57,6 +66,7 @@ export const AuthProvider = ({children}) => {
     const logout = async () => {
         try{
             await axios.post("http://localhost:3000/api/auth/logout",
+                {},
                 {
                     withCredentials: true
                 }

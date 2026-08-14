@@ -1,6 +1,7 @@
-import { Conversation } from "../models/Coversation.js";
+import { Conversation } from "../models/Conversation.js";
 import { Message } from "../models/Message.js";
 import { User } from "../models/User.js";
+import { io, onlineUser } from '../config/socket.js'
 
 export const sendMessage = async (req, res)=>{
     try{
@@ -8,21 +9,21 @@ export const sendMessage = async (req, res)=>{
         const {receiverId ,text} = req.body;    
         const userId = req.user.userId;
 
+        if(!receiverId || !text){
+            return res.status(400).json({
+                message:"receiver ID and text are required"
+            })
+        }
         const sender = await User.findById(userId);
-
-        const isFriends = await sender.friends.some(
-            friends => User.friends.toString() === receiverId
+        
+        const isFriends = sender.friends.some(
+            friends => friends.toString() === receiverId
         )
 
         if(!isFriends){
             return res.status(403).json({
             message: "You can only send messages to your friends."
         });
-        }
-        if(!receiverId || !text){
-            return res.status(400).json({
-                message:"receiver ID and text are required"
-            })
         }
 
         const receiver = await User.findById(receiverId);
@@ -54,13 +55,24 @@ export const sendMessage = async (req, res)=>{
         conversation.lastMessage = message._id;
         await conversation.save();
 
+        const receiverSocketId = await onlineUser.get(receiverId);
+        console.log("type of receiver: ", typeof(receiverSocketId))
+
+console.log("Receiver socket:", receiverSocketId);
+console.log("receiver id: ", receiverId)
+
+
+        if(receiverSocketId){
+            io.to(receiverSocketId).emit("newMessage",message)
+        }
+
         return res.status(201).json({
             message
         })
 
     }catch(error){
         return res.status(500).json({
-            message:"Internal Server Error"
+            message:"Internal Server Error: " + error
         })
     }
 

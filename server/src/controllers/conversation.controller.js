@@ -1,4 +1,4 @@
-import { Conversation } from "../models/Coversation.js";
+import { Conversation } from "../models/Conversation.js";
 
 export const getConversations = async (req, res) => {
     try {
@@ -22,7 +22,7 @@ export const getConversations = async (req, res) => {
     } catch (error) {
 
         return res.status(500).json({
-            message: "Internal Server Error"
+            message: "Internal Server Error: " + error
         });
 
     }

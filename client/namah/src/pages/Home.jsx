@@ -1,17 +1,17 @@
-import { useAuth } from '../context/AuthContext'
-
-
+import { useState } from 'react';
+import ChatWindow from '../components/ChatWindow';
+import ConversationList from '../components/ConversationList';
 
 const Home = () => {
-  const {logout} = useAuth()
-  
-  async function logOut(){
-    await logout();
-  }
+ const [selectedConversation, setSelectedConversation] = useState(null)
   return (
     <div>
-      Home page
-      <button onClick={logOut}>logout</button>
+      <ConversationList 
+        setSelectedConversation={setSelectedConversation}
+      />
+      <ChatWindow
+        conversation={selectedConversation}
+      />
     </div>
   )
 }

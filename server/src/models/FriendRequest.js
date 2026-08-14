@@ -16,11 +16,7 @@ const friendSchema = new mongoose.Schema({
         type: String,
         enum: ["pending","accepted","rejected"],
         default: "pending"
-    },
-    friends: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    }]
+    }    
 },
 {
     timestamps: true

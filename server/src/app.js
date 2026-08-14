@@ -24,7 +24,7 @@ import messageRoute from './routes/message.route.js'
 app.use('/api/auth',authRoute)
 app.use('/api/user',userRoute)
 app.use('/api/friends',friendRequestRoute)
-app.use('/api/conversation',conversationRoute)
+app.use('/api/conversations',conversationRoute)
 app.use('/api/message',messageRoute)
 
 export default app

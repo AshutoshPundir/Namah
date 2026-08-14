@@ -105,9 +105,7 @@ export const login = async (req, res)=> {
         secure: process.env.NODE_ENV === "production",
         sameSite:"lax"
     })
-    
-    console.log(token)
-
+        
     res.status(200).json({
         token,
         message:"login successfully"
@@ -116,7 +114,7 @@ export const login = async (req, res)=> {
 
     }catch(e){
         return res.status(500).json({
-            message:"Internal server Error"
+            message:"Internal server Error in Login: " + error
         })
     }
 }

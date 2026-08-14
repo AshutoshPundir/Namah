@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { decode } from "jsonwebtoken";
 const Private_Key = process.env.JWT_PRIVATE_KEY;
 
 export const generateToken = (user)=>{
@@ -16,6 +16,12 @@ export const generateToken = (user)=>{
 }
 
 export const verifyToken = (token)=> {
-    const decoded = jwt.verify(token,Private_Key);   
+    const decoded = jwt.verify(token,Private_Key
+        // , (err, decode)=> {
+        // if(err){
+        //     console.log("Token is invalid: ", err.message);
+        //     return
+        // }}
+    );   
     return decoded;
 }
