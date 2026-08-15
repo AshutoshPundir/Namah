@@ -12,7 +12,7 @@ export const AuthProvider = ({children}) => {
     const [loading, setLoading] = useState(true)
 
     useEffect(()=>{
-        const getCurrentUser = async()=> {
+        const getCurrentUser = async ()=> {
             try{
                 const response = await axios.get(
                     "http://localhost:3000/api/auth/me",
@@ -20,7 +20,6 @@ export const AuthProvider = ({children}) => {
                         withCredentials: true
                     }
                 )
-                console.log(response.data.user);
                 setUser(response.data.user);
             }catch(error){
                 setUser(null);
@@ -53,7 +52,7 @@ export const AuthProvider = ({children}) => {
             }
         );
 
-        setUser(response.data);
+        setUser(response.data.user);
         
         return response.data;
     } catch (error) {

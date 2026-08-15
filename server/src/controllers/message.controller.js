@@ -56,11 +56,6 @@ export const sendMessage = async (req, res)=>{
         await conversation.save();
 
         const receiverSocketId = await onlineUser.get(receiverId);
-        console.log("type of receiver: ", typeof(receiverSocketId))
-
-console.log("Receiver socket:", receiverSocketId);
-console.log("receiver id: ", receiverId)
-
 
         if(receiverSocketId){
             io.to(receiverSocketId).emit("newMessage",message)
