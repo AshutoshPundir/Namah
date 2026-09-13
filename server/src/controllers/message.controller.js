@@ -66,6 +66,7 @@ export const sendMessage = async (req, res)=>{
         })
 
     }catch(error){
+        console.log(error)
         return res.status(500).json({
             message:"Internal Server Error: " + error
         })
@@ -79,7 +80,6 @@ export const getMessages = async (req, res)=>{
         const { conversationId } = req.params;
     
         const conversations = await Conversation.findById(conversationId);
-    
         if(!conversations){
             return res.status(404).json({
                 message:"Conversation not found"

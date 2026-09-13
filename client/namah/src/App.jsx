@@ -2,7 +2,7 @@ import './App.css'
 import { Routes, Route } from 'react-router-dom';
 import Register from './pages/Register';
 import Login from './pages/Login';
-import ProtectedRoute from './components/protectedRoute';
+import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import GuestRoute from './components/GuestRoute';
 function App() {

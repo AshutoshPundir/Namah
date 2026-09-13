@@ -1,4 +1,3 @@
-import { request } from "express";
 import { FriendRequest } from "../models/FriendRequest.js";
 import { User } from "../models/User.js";
 
@@ -10,6 +9,16 @@ export const sendFriendRequest = async (req, res) => {``
 
         const receiver = await User.findById(receiverId);
 
+        const sender = await User.findById(senderId);
+
+        const isAlreadyFriend = sender.friends.some(
+            friend => friend.toString() === receiverId
+        )
+        if(isAlreadyFriend){
+            res.status(409).json({
+                message:"You are already friends"
+            })
+        }
         if (!receiver) {
             return res.status(404).json({
                 message: "User not found"
@@ -117,7 +126,7 @@ export const acceptFriendRequest = async (req, res)=>{
     request.status = "accepted";
 
     await request.save();
-    // add receiver to sender's friend
+
     await User.findByIdAndUpdate(
         request.sender,
         {
@@ -127,7 +136,6 @@ export const acceptFriendRequest = async (req, res)=>{
         }
     )
     
-    // add sender to receiver's friend
     await User.findByIdAndUpdate(
         request.receiver,
         {
@@ -137,14 +145,19 @@ export const acceptFriendRequest = async (req, res)=>{
         }
     )
 
+    const newFriend = await User.findById(request.receiver)
+        .select("username avatar bio");
+
     return res.status(200).json({
+        friend: newFriend,
         message:"Friend request has been accepted successfully"
     })
 
     }catch(error){
-    return res.status(500).json({
-        message:"Internal Server Error " + error
-    })
+        console.log(error)
+        return res.status(500).json({
+            message:"Internal Server Error " + error
+        })
 }
 
 }

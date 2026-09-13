@@ -23,7 +23,6 @@ export const connectSocket = () => {
     console.log("Socket disconnected");
     });
     
-console.log("socket created again")
 return socket
 }
 

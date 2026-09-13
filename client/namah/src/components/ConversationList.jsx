@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
-import ConversationItem from "./ConversationItem";
+import ConversationItem from "../components/ConversationItem";
 
 
-const ConversationList = ({setSelectedConversation}) => {
+const ConversationList = ({setSelectedConversation,refreshConversations}) => {
     const [conversations, setConversations] = useState([]);
 
     useEffect(()=> {
@@ -14,17 +14,17 @@ const ConversationList = ({setSelectedConversation}) => {
                         withCredentials: true
                     }
                 )
-                setConversations(response.data.conversations);
+                setConversations(response.data.conversations || []);
             }catch(error){
                 console.log("conversation error: " + error)
             }
         }
 
         getConversation();
-    },[])
+    },[refreshConversations])
 
   return (
-    <div>
+    <div >
         {conversations.map((conversation)=> (
             <ConversationItem
                 key={conversation._id}

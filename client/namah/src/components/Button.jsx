@@ -1,8 +1,8 @@
 
 const Button = ({button,type = "button" , onClick}) => {
   return (
-    <div>
-      <button type={type} onClick={onClick}>{button}</button>
+    <div className="bg-black text-white rounded-lg focus:border-white">
+      <button type={type} onClick={onClick} className="p-2 px-6">{button}</button>
     </div>
   )
 }
